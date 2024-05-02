@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<style>
+    .container {
+            background-color:skyblue;
+            width: 200px;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            margin: 100px auto;
+        }
+     .login-form input[type="submit"] {
+            width: 80%;
+            padding:5px;
+            background-color: grey;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+</style>
+</head>
+<body>
+<div class="container" >
+    <h2> Please login here </h2>
+<form class="login-form" action="{% url 'movieapp:login' %}" method="post">
+    {% csrf_token %}
+    <input type="text" name="username" placeholder="enter your user name"><br><br>
+    <input type="password" name="password" placeholder="enter your password"><br><br>
+    <input type="submit" value="Login">
+
+
+</form>
+</div>
+</body>
+</html>
+
+
+

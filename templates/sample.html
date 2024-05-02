@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{movie1.img.url}}"  width="300" height="300">
+        </div>
+        <div class="col-md-6">
+            <h2 style="color:aquamarine;">Title: {{movie1.name}}</h2>
+            <h6 style="color:black;">Release_date: {{movie1.released_date}}</h6>
+            <h6 style="color:aqua;"> {{movie1.description}}</h6>
+            <h6 style="color:yellow;"> Cast: {{movie1.cast}}</h6>
+            <h6 style="color:rosybrown;"> Genre: {{movie1.genre}}</h6>
+            <h6 style="color: midnightblue;">Trailer: <a href="{{ movie1.youtube_trailer_link }}">Watch Trailer</a></h6>
+
+      {% if request.user.is_authenticated %}
+            {% if movie1.uploader %}
+               <h6 style="color:blue;">Uploaded by: <a href="{% url 'movieapp:uploader_profile' uploader_username=movie1.uploader.username %}">{{ movie1.uploader.username }}</a></h6>
+           {% else %}
+           <h6 style="color:blue;">Uploaded by: Unknown</h6>
+           {% endif %}
+
+           <a class="btn btn-warning" href="{% url 'movieapp:update' movie1.id %}">update</a>
+           <a class="btn btn-danger" href="{% url 'movieapp:delete' movie1.id %}">delete</a>
+
+     {% else %}
+          <p>Please <a href="{% url 'movieapp:login' %}">log in</a> to view uploader details, and add your movies</p>
+     {% endif %}
+
+        </div>
+    </div>
+</div>
+
+
+  <!-- Display reviews -->
+
+  <h2>Reviews</h2>
+  {% if reviews %}
+    <ul>
+      {% for review in reviews %}
+        <li>
+          <strong>{{ review.reviewer_name }}</strong> - {{ review.rating }}
+          <p>{{ review.review_text }}</p>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No reviews available.</p>
+  {% endif %}
+<br><br>
+
+{% if request.user.is_authenticated %}
+    <h3>Write a Review</h3>
+    <form method="post" action="{% url 'movieapp:add_review' movie1.id %}">
+        {% csrf_token %}
+        <label for="review">Review:</label><br>
+        <textarea id="review" name="review" rows="4" cols="50"></textarea><br>
+        <label for="rating">Rating:</label>
+        <select id="rating" name="rating">
+            <option value="Good">Good</option>
+            <option value="Average">Average</option>
+            <option value="Bad">Bad</option>
+        </select><br>
+        <input type="submit" value="Submit">
+    </form>
+{% else %}
+    <p>Please <a href="{% url 'movieapp:login' %}">log in</a> to write a review.</p>
+{% endif %}
+
+
+{% endblock %}

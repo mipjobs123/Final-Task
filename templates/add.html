@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<div style="max-width: 400px; margin: auto;">
+    <h2>Add Movie</h2>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="name">Movie Name:</label><br>
+        <input type="text" id="name" name="name" placeholder="Enter movie name"><br><br>
+
+        <label for="desc">Description:</label><br>
+        <textarea id="desc" name="description" placeholder="Enter movie description" rows="4" cols="50"></textarea><br><br>
+
+        <label for="year">Released Date:</label><br>
+        <input type="text" id="year" name="released_date" placeholder="Enter release year"><br><br>
+
+        <label for="cast">Cast:</label><br>
+        <input type="text" id="cast" name="cast" placeholder="Enter movie cast"><br><br>
+
+        <label for="genre">Genre:</label><br>
+        <input type="text" id="genre" name="genre" placeholder="Enter movie genre"><br><br>
+
+        <label for="youtube_link">YouTube Trailer Link:</label><br>
+        <input type="url" id="youtube_link" name="youtube_trailer_link" placeholder="Enter YouTube trailer link"><br><br>
+
+        <label for="img">Image:</label><br>
+        <input type="file" id="img" name="img"><br><br>
+
+        <input type="submit" value="Add Movie">
+    </form>
+</div>
+{% endblock %}

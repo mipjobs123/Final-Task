@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+
+        <div class="col-md-8 offset-md-2">
+            <div class="card mt-5">
+                <div class="card-body">
+                  <h2 class="card-title" style="color: #f49548;">User profile: {{ uploader_username }}</h2>
+
+                    {% if movies_uploaded %}
+                        <h3 class="card-subtitle mt-3">My Collections:</h3>
+                        <ul class="list-group list-group-flush">
+                            {% for movie in movies_uploaded %}
+                                <li class="list-group-item">
+                                    <a href="{% url 'movieapp:detail' movie.id %}">{{ movie.name }}</a>
+                                </li>
+                                <!-- Display other movie details as needed -->
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="card-text">No movies uploaded by this user.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

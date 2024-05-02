@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block body %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-6">
+            <img src="{{ movie1.img.url }}"  width="300" height="300">
+        </div>
+        <div class="col-md-6">
+            <h2 style="color: aquamarine;">Title: {{ movie1.name }}</h2>
+            <h6 style="color: black;">Release Date: {{ movie1.released_date }}</h6>
+            <h6 style="color: aqua;">Description: {{ movie1.description }}</h6>
+            <h6 style="color: yellow;">Cast: {{ movie1.cast }}</h6>
+            <h6 style="color: rosybrown;">Genre: {{ movie1.genre }}</h6>
+            <h6 style="color: midnightblue;">Trailer: <a href="{{ movie1.youtube_trailer_link }}">Watch Trailer</a></h6>
+
+            {% if request.user.is_authenticated %}
+                {% if movie1.uploader %}
+                    <h6 style="color: blue;">Uploaded by: <a href="{% url 'movieapp:uploader_profile' uploader_username=movie1.uploader.username %}">{{ movie1.uploader.username }}</a></h6>
+                {% else %}
+                    <h6 style="color: blue;">Uploaded by: Unknown</h6>
+                {% endif %}
+
+                <a class="btn btn-warning" href="{% url 'movieapp:update' movie1.id %}">Update</a>
+                <a class="btn btn-danger" href="{% url 'movieapp:delete' movie1.id %}">Delete</a>
+
+            {% else %}
+                <p>Please <a href="{% url 'movieapp:login' %}">log in</a> to view uploader details and add your movies.</p>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+<div>
+<!-- Display reviews -->
+<div class="container mt-4">
+    <h2>Reviews</h2>
+    {% if reviews %}
+        <ul class="list-group">
+            {% for review in reviews %}
+                <li class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <strong>{{ review.reviewer_name }}</strong> - {{ review.rating }}
+                        </div>
+                        <div>
+                            <span class="badge bg-secondary">{{ review.created_at }}</span>
+                        </div>
+                    </div>
+                    <p class="mt-2">{{ review.review_text }}</p>
+                    {% if user.is_authenticated and user.username == review.reviewer_name or user == review.movie.uploader %}
+
+                        <form action="{% url 'movieapp:delete_review' review.id %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No reviews available.</p>
+    {% endif %}
+</div>
+</div>
+<br><br>
+<div  style="background-color: #f5deb3;">
+{% if request.user.is_authenticated %}
+    <div class="container mt-4">
+        <h3>Write a Review</h3>
+        <form method="post" action="{% url 'movieapp:add_review' movie1.id %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="review" class="form-label">Review:</label>
+                <textarea class="form-control" id="review" name="review" rows="4"></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="rating" class="form-label">Rating:</label>
+                <select class="form-select" id="rating" name="rating">
+                    <option value="Good">Good</option>
+                    <option value="Average">Average</option>
+                    <option value="Bad">Bad</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+{% else %}
+    <p class="container mt-4">Please <a href="{% url 'movieapp:login' %}">log in</a> to write a review.</p>
+{% endif %}
+
+
+</div>
+
+
+{% endblock %}

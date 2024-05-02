@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block body %}
+
+
+
+
+<div class="container">
+    <h2>{{ genre }} Movies</h2>
+    <ul class="list-group">
+        {% for movie in movies %}
+            <li class="list-group-item">
+                <a href="{% url 'movieapp:detail' movie.id %}">{{ movie.name }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item">No movies available in this genre.</li>
+        {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock %}

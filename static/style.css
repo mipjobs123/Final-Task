@@ -1,0 +1,32 @@
+body {
+    background-color: #bd2130;
+}
+.custom-navbar-bg {
+  background-color: #f2efce;
+}
+.center-brand {
+  text-align: center;
+  width: 100%;
+  font-weight: bold;
+  font-size: 24px;
+  font-family: 'Arial', sans-serif;
+  color:black !important;
+
+}
+.logos {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top:1px;
+  margin-left:540px
+}
+
+.logos img {
+  width: 100px;
+  height: 100px;
+}
+
+
+
+
+

@@ -31,7 +31,7 @@ def login(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            messages.info(request, "invalid credentials")
+            messages.error(request, "invalid credentials")
             return redirect('movieapp:login')
     return render(request, 'login.html')
 

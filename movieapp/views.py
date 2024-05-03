@@ -9,6 +9,9 @@ from .models import Review
 from .forms import MovieForm
 from .models import Movie
 from django.db.models import Q
+from django.utils.safestring import mark_safe
+
+
 def index(request):
     movie = Movie.objects.all()
     context = {
@@ -41,6 +44,13 @@ def register(request):
         Email = request.POST['email']
         PASSWORD = request.POST['password']
         Cpassword = request.POST['password1']
+
+                if not uname or not fname or not lname or not Email or not PASSWORD or not Cpassword:
+            error_message = "<strong style='font-size: 1.2em;'>All fields are required.</strong>"
+            messages.error(request, mark_safe(error_message))
+            return redirect('movieapp:register')
+
+        
         if PASSWORD == Cpassword:
             if User.objects.filter(username=uname).exists():
                 messages.info(request, "username already used")
